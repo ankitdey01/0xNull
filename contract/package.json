@@ -1,0 +1,12 @@
+{
+  "name": "0xnull-contract",
+  "version": "0.1.0",
+  "description": "0xNull Smart Contracts - Solidity contracts for on-chain credential management",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "0xnull-cli",
+  "version": "0.1.0",
+  "description": "0xNull CLI - Command-line tool for credential management (Phase 3)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "0xnull": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

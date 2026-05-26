@@ -1,0 +1,23 @@
+{
+  "name": "0xnull",
+  "version": "0.1.0",
+  "description": "0xNull - Decentralized credentials vault for developer teams",
+  "private": true,
+  "workspaces": [
+    "web",
+    "dapp",
+    "cli",
+    "backend",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=web",
+    "build": "npm run build --workspace=web && npm run build --workspace=dapp && npm run build --workspace=cli",
+    "type-check": "npm run build --workspace=web && npm run build --workspace=dapp && npm run build --workspace=cli && npm run build --workspace=backend && npm run build --workspace=contract && npm run build --workspace=packages/crypto && npm run build --workspace=packages/types && npm run build --workspace=packages/contract-client",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typescript": "^5.9.3"
+  }
+}
