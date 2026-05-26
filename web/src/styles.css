@@ -362,7 +362,7 @@ button {
 }
 
 .frost-blue-card {
-  background: linear-gradient(135deg, #bbd6ff 0%, #c3d7ff 100%);
+  background: linear-gradient(135deg, #e4ecff 0%, #c3d7ff 100%);
   color: #1a3a4a;
 }
 
@@ -569,6 +569,105 @@ button {
   color: rgb(0 0 0 / 60%);
   font-size: 16px;
   line-height: 1.5;
+}
+
+.wallet-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.wallet-auth-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.wallet-auth-control .cta-button:disabled,
+.waitlist-form .cta-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.64;
+}
+
+.wallet-status,
+.wallet-auth-error,
+.waitlist-helper {
+  margin: 0;
+  color: rgb(0 0 0 / 60%);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.wallet-auth-error {
+  max-width: 28rem;
+  color: rgb(220 38 38);
+}
+
+.wallet-user-button {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-wallet-user-button {
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px 8px 6px 14px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 76%);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 8%);
+}
+
+.nav-wallet-address {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.nav-wallet-user-button .cl-userButtonTrigger {
+  width: 38px;
+  height: 38px;
+}
+
+.nav-wallet-user-button .cl-avatarBox {
+  width: 38px;
+  height: 38px;
+}
+
+.wallet-required {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.wallet-required h3 {
+  margin: 0;
+  color: #000;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.wallet-required p {
+  margin: 0;
+}
+
+.wallet-chip {
+  width: fit-content;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 8px;
+  background: rgb(0 0 0 / 4%);
+  color: rgb(0 0 0 / 70%);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .modal-overlay {

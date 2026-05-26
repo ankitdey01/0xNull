@@ -1,12 +1,22 @@
 import { useWaitlist } from "../hooks/useWaitlist";
 import { ArrowRight } from "lucide-react";
+import { WalletConnectButton } from "../components/WalletConnectButton";
+import { useWalletAddress } from "../hooks/useWalletAddress";
 
 interface WaitlistProps {
   onSuccess?: () => void;
 }
 
 export function Waitlist({ onSuccess }: WaitlistProps) {
-  const { state, email, error, setEmail, handleSubmit } = useWaitlist(onSuccess);
+  const { isLoaded, walletAddress } = useWalletAddress();
+  const {
+    state,
+    hasExistingEntry,
+    email,
+    error,
+    setEmail,
+    handleSubmit,
+  } = useWaitlist(onSuccess, walletAddress);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -18,11 +28,32 @@ export function Waitlist({ onSuccess }: WaitlistProps) {
     }
   };
 
+  if (!isLoaded) {
+    return <p className="waitlist-helper">Checking wallet session...</p>;
+  }
+
+  if (!walletAddress) {
+    return (
+      <div className="wallet-required">
+        <h3>Connect your MetaMask wallet</h3>
+        <WalletConnectButton size="lg">Connect Wallet</WalletConnectButton>
+      </div>
+    );
+  }
+
+  if (hasExistingEntry && state !== "success") {
+    return (
+      <div className="success-message">
+        <h3>Already waitlisted.</h3>
+        <p>Stay tuned.</p>
+      </div>
+    );
+  }
+
   // Success state: show success message, hide form
   if (state === "success") {
     return (
       <div className="success-message">
-        <div className="success-icon">✓</div>
         <h3>You're on the list.</h3>
         <p>Check your email for updates about 0xNull launch.</p>
       </div>
@@ -32,6 +63,7 @@ export function Waitlist({ onSuccess }: WaitlistProps) {
   // Default, loading, and error states: show form
   return (
     <form className="waitlist-form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+      <p className="wallet-chip">Wallet {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)} connected!</p>
       <input
         type="email"
         placeholder="Enter your email"

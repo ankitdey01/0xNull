@@ -1,7 +1,10 @@
-import { FormEvent, MouseEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { MouseEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { Waitlist } from "./sections/Waitlist";
+import { WalletConnectButton } from "./components/WalletConnectButton";
+import { useWalletAddress } from "./hooks/useWalletAddress";
 
 type RouteName = "" | "network" | "ecosystem" | "security" | "help" | "wallet";
 type Target = { kind: "route"; path: RouteName } | { kind: "section"; id: string };
@@ -230,6 +233,8 @@ function HaloMark({ className = "halo-mark" }: { className?: string }) {
 
 function Navbar() {
   const route = useRoute("");
+  const { isLoaded, isSignedIn, walletAddress } = useWalletAddress();
+  const showWalletUser = isLoaded && isSignedIn && walletAddress;
 
   return (
     <nav className="site-nav">
@@ -252,9 +257,16 @@ function Navbar() {
           ))}
         </div>
 
-        <TargetLink target={{ kind: "route", path: "wallet" }} className="wallet-button" editable>
-          Connect Wallet
-        </TargetLink>
+        {showWalletUser ? (
+          <div className="wallet-user-button nav-wallet-user-button" aria-label="Wallet account menu">
+            <span className="nav-wallet-address">{walletAddress.slice(0, 7)}...{walletAddress.slice(-5)}</span>
+            <UserButton afterSignOutUrl="/" />
+          </div>
+        ) : (
+          <TargetLink target={{ kind: "route", path: "wallet" }} className="wallet-button" editable>
+            Connect Wallet
+          </TargetLink>
+        )}
       </div>
     </nav>
   );
@@ -318,7 +330,7 @@ function WaitlistFormModal({
           ×
         </button>
         
-        <h2 data-editable="true">Join the Waitlist</h2>
+        <h2 data-editable="true">Join the Waitlist.</h2>
         <p data-editable="true">Be the first to know when 0xNull launches.</p>
         <Waitlist onSuccess={onClose} />
       </motion.div>
@@ -523,7 +535,7 @@ function WaitlistModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 }
 
 function WalletPage() {
-  const [showWaitlist, setShowWaitlist] = useState(false);
+  const { isLoaded, walletAddress } = useWalletAddress();
 
   return (
     <PageWithOffset>
@@ -531,12 +543,29 @@ function WalletPage() {
         <div className="wide-container centered">
           <h2 data-editable="true">Connect your wallet</h2>
           <p data-editable="true">Link MetaMask to join your team's vault, manage credentials, and verify on-chain access control.</p>
-          <CtaButton size="base" onClick={() => setShowWaitlist(true)}>
-            Connect Wallet
-          </CtaButton>
+          <div className="wallet-panel">
+            {!isLoaded && <p className="wallet-status">Checking wallet session...</p>}
+            <SignedOut>
+              <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
+            </SignedOut>
+            <SignedIn>
+              {walletAddress ? (
+                <>
+                  <p className="wallet-status">Connected as {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
+                  <div className="wallet-user-button">
+                    <UserButton afterSignOutUrl="/" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="wallet-status">Your Clerk session is active, but no MetaMask wallet is linked yet.</p>
+                  <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
+                </>
+              )}
+            </SignedIn>
+          </div>
         </div>
       </section>
-      <WaitlistModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </PageWithOffset>
   );
 }
