@@ -327,13 +327,24 @@ function WaitlistFormModal({
         exit={{ scale: 0.95, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Close">
+        <motion.button 
+          className="modal-close" 
+          onClick={onClose} 
+          aria-label="Close"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
           ×
-        </button>
+        </motion.button>
         
-        <h2 data-editable="true">Join the Waitlist.</h2>
-        <p data-editable="true">Be the first to know when 0xNull launches.</p>
-        <Waitlist onSuccess={onClose} />
+        <div className="modal-header">
+          <h2 data-editable="true">Join the Waitlist</h2>
+          <p data-editable="true">Be the first to know when 0xNull launches.</p>
+        </div>
+        
+        <div className="modal-body">
+          <Waitlist onSuccess={onClose} />
+        </div>
       </motion.div>
     </div>
   );
@@ -481,6 +492,8 @@ function HelpSection() {
 }
 
 function SecurityPage() {
+  const [showWaitlist, setShowWaitlist] = useState(false);
+
   return (
     <>
       <PageWithOffset>
@@ -509,7 +522,8 @@ function SecurityPage() {
           </div>
         </section>
       </PageWithOffset>
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
+      <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </>
   );
 }
@@ -540,6 +554,7 @@ function WaitlistModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
 function WalletPage() {
   const { isLoaded, walletAddress } = useWalletAddress();
+  const [showWaitlist, setShowWaitlist] = useState(false);
 
   return (
     <>
@@ -572,7 +587,8 @@ function WalletPage() {
           </div>
         </section>
       </PageWithOffset>
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
+      <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </>
   );
 }
@@ -595,7 +611,7 @@ function HomePage() {
       <HeroSection onWaitlistClick={() => setShowWaitlist(true)} />
       <EcosystemSection />
       <HelpSection />
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
       <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </div>
   );
@@ -611,30 +627,36 @@ function NetworkPage() {
         <HeroSection onWaitlistClick={() => setShowWaitlist(true)} />
       </div>
       <NetworkSummary />
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
       <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </div>
   );
 }
 
 function EcosystemPage() {
+  const [showWaitlist, setShowWaitlist] = useState(false);
+
   return (
     <>
       <PageWithOffset>
         <EcosystemSection />
       </PageWithOffset>
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
+      <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </>
   );
 }
 
 function HelpPage() {
+  const [showWaitlist, setShowWaitlist] = useState(false);
+
   return (
     <>
       <PageWithOffset>
         <HelpSection />
       </PageWithOffset>
-      <Footer />
+      <Footer onOpenWaitlist={() => setShowWaitlist(true)} />
+      <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </>
   );
 }

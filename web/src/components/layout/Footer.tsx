@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Twitter, Instagram } from "lucide-react";
 
-export function Footer() {
+export function Footer({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
   return (
     <footer className="footer-section">
       <div className="footer-content">
@@ -17,7 +17,7 @@ export function Footer() {
             0xNull is building the future of credential verification. Join our waitlist to be the first to know when we launch.
           </p>
           
-          <button className="footer-cta" data-editable="true">
+          <button className="footer-cta" onClick={onOpenWaitlist} data-editable="true">
             Join Waitlist Now
           </button>
         </motion.div>

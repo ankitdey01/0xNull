@@ -8,6 +8,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Emil's design easing curves */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 * {
@@ -120,13 +124,17 @@ button {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
-  transition: background-color 180ms ease;
+  transition: background-color 150ms var(--ease-out), transform 160ms var(--ease-out);
   white-space: nowrap;
+  cursor: pointer;
 }
 
-.wallet-button:hover,
-.cta-button:hover {
+.wallet-button:hover {
   background: #1f2937;
+}
+
+.wallet-button:active {
+  transform: scale(0.97);
 }
 
 .hero-section {
@@ -199,7 +207,15 @@ button {
   color: #fff;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 180ms ease;
+  transition: background-color 150ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.cta-button:hover:not(:disabled) {
+  background: #1f2937;
+}
+
+.cta-button:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .cta-button-lg {
@@ -588,7 +604,10 @@ button {
 .wallet-auth-control .cta-button:disabled,
 .waitlist-form .cta-button:disabled {
   cursor: not-allowed;
-  opacity: 0.64;
+  background: rgb(0 0 0 / 60%);
+  opacity: 1;
+  color: rgb(255 255 255 / 90%);
+  transition: background 150ms var(--ease-out), opacity 150ms var(--ease-out);
 }
 
 .wallet-status,
@@ -661,13 +680,15 @@ button {
 .wallet-chip {
   width: fit-content;
   margin: 0;
-  padding: 8px 10px;
-  border: 1px solid rgb(0 0 0 / 8%);
+  padding: 8px 12px;
+  border: 1px solid rgb(0 0 0 / 10%);
   border-radius: 8px;
-  background: rgb(0 0 0 / 4%);
-  color: rgb(0 0 0 / 70%);
+  background: rgb(16, 185, 129 / 8%);
+  color: rgb(5, 150, 105);
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out);
 }
 
 .modal-overlay {
@@ -682,20 +703,28 @@ button {
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
+  padding: 20px;
 }
 
 .modal-content {
   position: relative;
   background: white;
-  border-radius: 16px;
-  padding: 48px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-content h2 {
-  margin: 0 0 16px;
+.modal-header {
+  padding: 40px 40px 24px;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+.modal-header h2 {
+  margin: 0 0 12px;
   color: #000;
   font-size: 28px;
   line-height: 1.2;
@@ -703,35 +732,46 @@ button {
   letter-spacing: -0.02em;
 }
 
-.modal-content p {
+.modal-header p {
   margin: 0;
   color: rgb(0 0 0 / 70%);
   font-size: 15px;
   line-height: 1.6;
 }
 
+.modal-body {
+  padding: 32px 40px;
+}
+
 .modal-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
   width: 32px;
   height: 32px;
   border: none;
-  background: transparent;
+  background: rgb(0 0 0 / 4%);
+  border-radius: 8px;
   font-size: 24px;
   cursor: pointer;
-  color: rgb(0 0 0 / 40%);
-  transition: color 200ms ease;
+  color: rgb(0 0 0 / 50%);
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
 }
 
 .modal-close:hover {
-  color: rgb(0 0 0 / 70%);
+  background: rgb(0 0 0 / 8%);
+  color: rgb(0 0 0 / 80%);
 }
 
 .waitlist-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .waitlist-form h2 {
@@ -750,25 +790,51 @@ button {
   line-height: 1.6;
 }
 
+.waitlist-form .wallet-chip {
+  margin-bottom: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .form-input {
-  padding: 12px 16px;
+  padding: 14px 16px;
   border: 1px solid rgb(0 0 0 / 10%);
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   font-family: inherit;
-  transition: border-color 200ms ease, box-shadow 200ms ease;
-  background: white;
+  background: rgb(255 255 255 / 100%);
   color: #000;
+  transition: border-color 150ms var(--ease-out), box-shadow 150ms var(--ease-out), background-color 150ms var(--ease-out);
+  width: 100%;
+}
+
+.form-input:hover:not(:disabled) {
+  border-color: rgb(0 0 0 / 15%);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: rgb(0 0 0 / 30%);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  border-color: rgb(0 0 0 / 40%);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .form-input::placeholder {
   color: rgb(0 0 0 / 40%);
+  transition: color 150ms var(--ease-out);
+}
+
+.form-input:focus::placeholder {
+  color: rgb(0 0 0 / 30%);
+}
+
+.form-input:disabled {
+  background: rgb(0 0 0 / 4%);
+  cursor: not-allowed;
+  border-color: rgb(0 0 0 / 6%);
 }
 
 .modal-button {
@@ -815,6 +881,21 @@ button {
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+.loading-text {
+  opacity: 0.9;
+}
+
+.waitlist-error {
+  color: rgb(220 38 38);
+  font-size: 14px;
+  margin: 0;
+  transition: color 200ms var(--ease-out);
+}
+
+.success-message svg {
+  color: rgb(5, 150, 105);
 }
 
 /* Footer */
@@ -993,6 +1074,30 @@ button {
 
 .form-submit {
   justify-content: space-between !important;
+  width: 100%;
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    border-radius: 16px;
+  }
+
+  .modal-header {
+    padding: 32px 24px 20px;
+  }
+
+  .modal-header h2 {
+    font-size: 24px;
+  }
+
+  .modal-body {
+    padding: 24px;
+  }
+
+  .form-input {
+    font-size: 16px;
+  }
 }
 
 @keyframes marquee {
