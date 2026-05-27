@@ -5,6 +5,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { Waitlist } from "./sections/Waitlist";
 import { WalletConnectButton } from "./components/WalletConnectButton";
 import { useWalletAddress } from "./hooks/useWalletAddress";
+import { Footer } from "./components/layout/Footer";
 
 type RouteName = "" | "network" | "ecosystem" | "security" | "help" | "wallet";
 type Target = { kind: "route"; path: RouteName } | { kind: "section"; id: string };
@@ -19,11 +20,11 @@ type Brand = {
   textTransform?: "uppercase";
 };
 
-const heroVideo = "/assets/halo-hero.mp4";
+const heroVideo = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_101827_abebfeec-f243-466b-b494-7f6814c0fbbf.mp4";
 const heroBg = "/assets/bg.png";
 
 // Toggle: Set to false to use background image instead of video
-const useVideo = false;
+const useVideo = true;
 const card1Image =
   "/assets/card1.png";
 const card2Image =
@@ -481,32 +482,35 @@ function HelpSection() {
 
 function SecurityPage() {
   return (
-    <PageWithOffset>
-      <section className="section security-page-section">
-        <div className="wide-container">
-          <h2 className="section-title with-margin-small" data-editable="true">
-            0xNull Security
-          </h2>
-          <p className="large-copy" data-editable="true">
-            AES-256-GCM encryption on your device, SHA-256 credential commitments on-chain, and zero-knowledge proofs ensure your team secrets stay private while maintaining tamper-proof access.
-          </p>
-          <div className="info-card-grid">
-            <article className="info-card">
-              <h3 data-editable="true">Zero Plaintext</h3>
-              <p data-editable="true">Encryption happens on your device. We never see your secrets.</p>
-            </article>
-            <article className="info-card">
-              <p data-editable="true">No passwords. Just MetaMask and your team's smart contract.</p>
-            </article>
+    <>
+      <PageWithOffset>
+        <section className="section security-page-section">
+          <div className="wide-container">
+            <h2 className="section-title with-margin-small" data-editable="true">
+              0xNull Security
+            </h2>
+            <p className="large-copy" data-editable="true">
+              AES-256-GCM encryption on your device, SHA-256 credential commitments on-chain, and zero-knowledge proofs ensure your team secrets stay private while maintaining tamper-proof access.
+            </p>
+            <div className="info-card-grid">
+              <article className="info-card">
+                <h3 data-editable="true">Zero Plaintext</h3>
+                <p data-editable="true">Encryption happens on your device. We never see your secrets.</p>
+              </article>
+              <article className="info-card">
+                <p data-editable="true">No passwords. Just MetaMask and your team's smart contract.</p>
+              </article>
+            </div>
+            <div className="spaced-top">
+              <CtaButton size="base" route="wallet">
+                Connect Wallet
+              </CtaButton>
+            </div>
           </div>
-          <div className="spaced-top">
-            <CtaButton size="base" route="wallet">
-              Connect Wallet
-            </CtaButton>
-          </div>
-        </div>
-      </section>
-    </PageWithOffset>
+        </section>
+      </PageWithOffset>
+      <Footer />
+    </>
   );
 }
 
@@ -538,35 +542,38 @@ function WalletPage() {
   const { isLoaded, walletAddress } = useWalletAddress();
 
   return (
-    <PageWithOffset>
-      <section id="wallet" className="wallet-section" aria-label="Wallet">
-        <div className="wide-container centered">
-          <h2 data-editable="true">Connect your wallet</h2>
-          <p data-editable="true">Link MetaMask to join your team's vault, manage credentials, and verify on-chain access control.</p>
-          <div className="wallet-panel">
-            {!isLoaded && <p className="wallet-status">Checking wallet session...</p>}
-            <SignedOut>
-              <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
-            </SignedOut>
-            <SignedIn>
-              {walletAddress ? (
-                <>
-                  <p className="wallet-status">Connected as {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
-                  <div className="wallet-user-button">
-                    <UserButton afterSignOutUrl="/" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p className="wallet-status">Your Clerk session is active, but no MetaMask wallet is linked yet.</p>
-                  <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
-                </>
-              )}
-            </SignedIn>
+    <>
+      <PageWithOffset>
+        <section id="wallet" className="wallet-section" aria-label="Wallet">
+          <div className="wide-container centered">
+            <h2 data-editable="true">Connect your wallet</h2>
+            <p data-editable="true">Link MetaMask to join your team's vault, manage credentials, and verify on-chain access control.</p>
+            <div className="wallet-panel">
+              {!isLoaded && <p className="wallet-status">Checking wallet session...</p>}
+              <SignedOut>
+                <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
+              </SignedOut>
+              <SignedIn>
+                {walletAddress ? (
+                  <>
+                    <p className="wallet-status">Connected as {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
+                    <div className="wallet-user-button">
+                      <UserButton afterSignOutUrl="/" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="wallet-status">Your Clerk session is active, but no MetaMask wallet is linked yet.</p>
+                    <WalletConnectButton size="base">Connect MetaMask</WalletConnectButton>
+                  </>
+                )}
+              </SignedIn>
+            </div>
           </div>
-        </div>
-      </section>
-    </PageWithOffset>
+        </section>
+      </PageWithOffset>
+      <Footer />
+    </>
   );
 }
 
@@ -588,6 +595,7 @@ function HomePage() {
       <HeroSection onWaitlistClick={() => setShowWaitlist(true)} />
       <EcosystemSection />
       <HelpSection />
+      <Footer />
       <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </div>
   );
@@ -603,6 +611,7 @@ function NetworkPage() {
         <HeroSection onWaitlistClick={() => setShowWaitlist(true)} />
       </div>
       <NetworkSummary />
+      <Footer />
       <WaitlistFormModal isOpen={showWaitlist} onClose={() => setShowWaitlist(false)} />
     </div>
   );
@@ -610,17 +619,23 @@ function NetworkPage() {
 
 function EcosystemPage() {
   return (
-    <PageWithOffset>
-      <EcosystemSection />
-    </PageWithOffset>
+    <>
+      <PageWithOffset>
+        <EcosystemSection />
+      </PageWithOffset>
+      <Footer />
+    </>
   );
 }
 
 function HelpPage() {
   return (
-    <PageWithOffset>
-      <HelpSection />
-    </PageWithOffset>
+    <>
+      <PageWithOffset>
+        <HelpSection />
+      </PageWithOffset>
+      <Footer />
+    </>
   );
 }
 
